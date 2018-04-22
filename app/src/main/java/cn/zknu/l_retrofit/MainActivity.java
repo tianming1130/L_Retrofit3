@@ -6,6 +6,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MainActivity extends AppCompatActivity  implements View.OnClickListener{
     private Button mBtnGet;
     private Button mBtnPost;
@@ -44,19 +48,29 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
     }
 
     private void httpPost() {
-        RetrofitUtil.requestGet(new ResponseData() {
+        RetrofitUtil.requestPost(new Callback<String>() {
             @Override
-            public void _onResponse(String data) {
-                mShowMsg.setText("Post--->"+data);
+            public void onResponse(Call<String> call, Response<String> response) {
+                mShowMsg.setText("Get方法获取数据--->"+response.body());
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                mShowMsg.setText(t.getMessage());
             }
         });
     }
 
     private void httpGet() {
-        RetrofitUtil.requestGet(new ResponseData() {
+        RetrofitUtil.requestGet(new Callback<String>() {
             @Override
-            public void _onResponse(String data) {
-                mShowMsg.setText("Get--->"+data);
+            public void onResponse(Call<String> call, Response<String> response) {
+              mShowMsg.setText("Get方法获取数据--->"+response.body());
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                mShowMsg.setText(t.getMessage());
             }
         });
     }
